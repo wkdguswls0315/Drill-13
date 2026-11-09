@@ -38,6 +38,16 @@ def handle_events():
                         game_world.remove_object(obj)
             inventory_open = False
             return
+        elif (inventory_open and event.type == SDL_KEYDOWN and
+              event.key == SDLK_1 and not getattr(event, 'repeat', 0)):
+            Ball.image = load_image('ball21x21.png')
+            boy.has_ball = True
+            for layer in game_world.world:
+                for obj in layer[:]:
+                    if isinstance(obj, Ball):
+                        game_world.remove_object(obj)
+            inventory_open = False
+            return
         else:
             boy.handle_event(event)
 
