@@ -1,6 +1,7 @@
 import game_framework
 from pico2d import *
 import game_world
+from ball import Ball
 from boy import Boy
 from grass import Grass
 
@@ -27,6 +28,15 @@ def handle_events():
         elif (event.type == SDL_KEYDOWN and event.key == SDLK_i and
               not getattr(event, 'repeat', 0)):
             inventory_open = not inventory_open
+            return
+        elif (inventory_open and event.type == SDL_KEYDOWN and
+              event.key == SDLK_0 and not getattr(event, 'repeat', 0)):
+            boy.has_ball = False
+            for layer in game_world.world:
+                for obj in layer[:]:
+                    if isinstance(obj, Ball):
+                        game_world.remove_object(obj)
+            inventory_open = False
             return
         else:
             boy.handle_event(event)
